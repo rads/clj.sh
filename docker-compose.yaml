@@ -1,0 +1,16 @@
+services:
+  clj.sh:
+    image: radsmith/clj.sh:latest
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "bb", "-e", "(slurp \"http://localhost:3000\")"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    network_mode: 'host'
+    ports:
+      - '127.0.0.1:3000:3000'
+    volumes:
+      - ~/.m2:/root/.m2
+      - ~/.gitlibs:/root/.gitlibs

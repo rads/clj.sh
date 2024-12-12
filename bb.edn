@@ -1,0 +1,6 @@
+{:tasks {:init (alter-var-root (var babashka.process/*defaults*) assoc
+                               :pre-start-fn
+                               (fn [opts]
+                                 (binding [*out* *err*]
+                                   (apply println "+" (:cmd opts)))))
+         dev (apply shell "clojure -M:user:dev" *command-line-args*)}}

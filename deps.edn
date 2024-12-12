@@ -1,0 +1,14 @@
+{:paths ["src" "resources" "classes"]
+ :deps {info.sunng/ring-jetty9-adapter {:mvn/version "0.36.0"}
+        metosin/reitit {:mvn/version "0.7.2"}
+        org.babashka/cli {:mvn/version "0.8.61"}
+        hiccup/hiccup {:mvn/version "2.0.0-RC4"}
+        metosin/muuntaja {:mvn/version "0.6.10"}
+        org.slf4j/slf4j-simple {:mvn/version "2.0.16"}
+        nrepl/nrepl {:mvn/version "1.3.0"}
+        org.clojure/tools.logging {:mvn/version "1.3.0"}
+        prone/prone {:mvn/version "2021-04-23"}}
+ :aliases
+ {:aot {:main-opts ["-e" "(compile 'clj.sh)"]}
+  :dev {:main-opts ["-m" "clj.sh" "--reload" "--show-errors"]}
+  :prod {:main-opts ["-m" "clj.sh"]}}}

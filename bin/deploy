@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+cd $(dirname $0)/..
+
+HOST="ssh.clj.sh"
+LOCAL_DIR="/tmp/clj.sh"
+REMOTE_DIR="~/clj.sh"
+IMAGE="radsmith/clj.sh:latest"
+PLATFORM="linux/amd64"
+ARCHIVE="image.tar.gz"
+
+set -eux
+
+# Create build folder
+mkdir -p "$LOCAL_DIR"
+
+# Build image
+docker build -t "$IMAGE" --platform="$PLATFORM" .
+docker save "$IMAGE" | gzip > "$LOCAL_DIR/$ARCHIVE"
+
+# Upload image and docker-compose.yaml
+ssh "$HOST" "mkdir -p $REMOTE_DIR"
+scp "$LOCAL_DIR/$ARCHIVE" docker-compose.yaml "$HOST:$REMOTE_DIR/"
+
+# Load image and restart services
+ssh "$HOST" "cd $REMOTE_DIR && gunzip -c $ARCHIVE | sudo docker load && sudo docker compose up -d"
